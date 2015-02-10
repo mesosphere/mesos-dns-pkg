@@ -4,11 +4,9 @@ VERSION ?= 0.1
 .PHONY: help
 help:
 	@echo "Please choose one of the following targets:"
-	@echo "  all, deb, rpm, fedora, osx, or el"
-	@echo "For release builds:"
-	@echo "  make PKG_REL=1.0 deb"
-	@echo "To override package release version:"
-	@echo "  make PKG_REL=0.2.20141228050159 rpm"
+	@echo "  all, deb, rpm, el, ubuntu, debian"
+	@echo "To override package version:"
+	@echo "  make VERSION=0.2 rpm"
 	@exit 0
 
 .PHONY: all
