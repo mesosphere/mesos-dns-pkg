@@ -11,7 +11,7 @@ apt-get install docker.io			## On Debian/Ubuntu
 ```
 
 ```bash
-yum install docker                              ## On RedHat/CentOS/Fedora
+yum install docker                  ## On RedHat/CentOS/Fedora
 ```
 
 * Build packages
