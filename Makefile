@@ -53,7 +53,7 @@ debian-wheezy-77: packages
 
 .PHONY: clean
 clean:
-	rm -rf $(OUTPUT)
+	rm -rf '$(OUTPUT)'
 
 packages:
-	mkdir -p $(OUTPUT)
+	mkdir -p '$(OUTPUT)'
