@@ -5,8 +5,7 @@ Wants=network.target
 
 [Service]
 ExecStart=/usr/bin/mesos-dns -config=/etc/mesos-dns/config.json
-Restart=on-abort
-Restart=always
+Restart=on-failure
 RestartSec=20
 
 [Install]
