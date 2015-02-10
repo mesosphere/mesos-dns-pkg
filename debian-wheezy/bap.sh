@@ -1,4 +1,5 @@
 #!/bin/sh
+version=${1-0.1}
 if [ ! -d /target ]
 then
   echo "output directory /target not found"
@@ -20,8 +21,8 @@ cd /package
 
 fpm -C root \
  --config-files etc/mesos-dns/config.json.sample \
- --iteration 1.0.debian77 \
- -t deb -s dir -n mesos-dns -v $(date +%Y%m%d%H%M%S) \
+ --iteration $(date +%Y%m%d%H%M%S).debian77 \
+ -t deb -s dir -n mesos-dns -v $version \
  --deb-init mesos-dns.init \
  --after-install mesos-dns.postinst \
  --after-remove mesos-dns.postrm \

@@ -1,4 +1,5 @@
 OUTPUT := $(shell pwd)/packages
+VERSION ?= 0.1
 
 .PHONY: help
 help:
@@ -34,22 +35,22 @@ debian-wheezy: debian-wheezy-77
 .PHONY: el6
 el6: packages
 	docker build -t mesosphere/mesosdnsbuilder-el6 el6
-	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-el6
+	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-el6 bap $(VERSION)
 
 .PHONY: el7
 el7: packages
 	docker build -t mesosphere/mesosdnsbuilder-el7 el7
-	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-el7
+	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-el7 bap $(VERSION)
 
 .PHONY: ubuntu-trusty
 ubuntu-trusty: packages
 	docker build -t mesosphere/mesosdnsbuilder-ubuntu1404 ubuntu1404
-	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-ubuntu1404
+	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-ubuntu1404 bap $(VERSION)
 
 .PHONY: debian-wheezy-77
 debian-wheezy-77: packages
 	docker build -t mesosphere/mesosdnsbuilder-debian-wheezy debian-wheezy
-	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-debian-wheezy
+	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-debian-wheezy bap $(VERSION)
 
 .PHONY: clean
 clean:

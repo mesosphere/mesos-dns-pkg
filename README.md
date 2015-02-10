@@ -20,4 +20,16 @@ yum install docker                  ## On RedHat/CentOS/Fedora
 ./package.sh
 ```
 
+or
+
+```bash
+make all
+```
+
+or
+
+```bash
+make ubuntu1404 VERSION=0.2
+```
+
 Packages will be created in ./packages/

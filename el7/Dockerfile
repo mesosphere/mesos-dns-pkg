@@ -15,6 +15,6 @@ RUN mkdir -p /build/ && \
     mkdir -p /package/root/usr/lib/systemd/system/
 
 COPY mesos-dns.service /package/root/usr/lib/systemd/system/
-COPY bap.sh /bap.sh
+COPY bap.sh /usr/bin/bap
 
-CMD ["/bap.sh"]
+CMD ["bap"]

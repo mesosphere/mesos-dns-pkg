@@ -14,6 +14,6 @@ RUN mkdir -p /build/ && \
     mkdir -p /package/root/etc/init/
 
 COPY mesos-dns.conf /package/root/etc/init/
-COPY bap.sh /bap.sh
+COPY bap.sh /usr/bin/bap
 
-CMD ["/bap.sh"]
+CMD ["bap"]

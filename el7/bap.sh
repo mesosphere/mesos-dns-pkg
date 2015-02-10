@@ -1,4 +1,5 @@
 #!/bin/sh
+version=${1-0.1}
 if [ ! -d /target ]
 then
   echo "output directory /target not found"
@@ -21,8 +22,8 @@ cd /package
 
 fpm -C root --config-files usr/lib/systemd/system/mesos-dns.service \
  --config-files etc/mesos-dns/config.json.sample \
- --iteration 1.0.el7 \
- -t rpm -s dir -n mesos-dns -v $(date +%Y%m%d%H%M%S) \
+ --iteration $(date +%Y%m%d%H%M%S).el7 \
+ -t rpm -s dir -n mesos-dns -v $version \
  --architecture native \
  --url "https://github.com/mesosphere/mesos-dns" \
  --license Apache-2.0 \

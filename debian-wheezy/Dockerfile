@@ -34,6 +34,6 @@ RUN mkdir -p /build/ && \
 COPY mesos-dns.init /package/
 COPY mesos-dns.postinst /package/
 COPY mesos-dns.postrm /package/
-COPY bap.sh /bap.sh
+COPY bap.sh /usr/bin/bap
 
-CMD ["/bap.sh"]
+CMD ["bap"]
