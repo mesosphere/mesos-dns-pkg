@@ -1,6 +1,6 @@
 mesos-dns-pkg
 =============
-Packaging utilities for Mesos-DNS
+Packaging utilities for [Mesos-DNS](https://github.com/mesosphere/mesos-dns)
 
 Set Up
 ------
