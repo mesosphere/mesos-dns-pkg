@@ -1,4 +1,5 @@
 OUTPUT := $(shell pwd)/packages
+DOCKER_OUT := $(shell pwd)/docker
 VERSION ?= 0.1
 
 .PHONY: help
@@ -50,9 +51,19 @@ debian-wheezy-77: packages
 	docker build -t mesosphere/mesosdnsbuilder-debian-wheezy debian-wheezy
 	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-debian-wheezy bap $(VERSION)
 
+.PHONY: docker-rootfs
+docker-rootfs:
+	docker build -t mesosphere/mesosdnsbuilder-docker-rootfs docker-rootfs
+	docker run -v $(DOCKER_OUT):/target mesosphere/mesosdnsbuilder-docker-rootfs bap $(VERSION)
+
+.PHONY: docker
+docker: docker-rootfs
+	docker build -t mesosphere/mesos-dns docker
+
 .PHONY: clean
 clean:
 	rm -rf '$(OUTPUT)'
+	rm -f docker/mesos-dns_rootfs.tar.gz
 
 packages:
 	mkdir -p '$(OUTPUT)'
