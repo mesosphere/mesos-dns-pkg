@@ -50,6 +50,15 @@ debian-wheezy-77: packages
 	docker build -t mesosphere/mesosdnsbuilder-debian-wheezy debian-wheezy
 	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-debian-wheezy bap $(VERSION)
 
+.PHONY: tarball
+tarball: packages
+	docker build -t mesosphere/mesosdnsbuilder-tarball tarball
+	docker run -v $(OUTPUT):/target mesosphere/mesosdnsbuilder-tarball bap $(VERSION)
+
+.PHONY: docker
+docker: packages
+	docker build -t mesosphere/mesos-dns docker
+
 .PHONY: clean
 clean:
 	rm -rf '$(OUTPUT)'
