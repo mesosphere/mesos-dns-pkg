@@ -1,5 +1,4 @@
 #!/bin/sh
-version=${1-0.1}
 if [ ! -d /target ]
 then
   echo "output directory /target not found"
@@ -18,8 +17,11 @@ strip mesos-dns
 cp mesos-dns /package/root/usr/bin/
 cp /lib64/ld-linux-x86-64.so.2 /package/root/lib64/
 cp /lib64/libc.so.6 /package/root/lib64/
+cp /lib64/libnss_compat.so.2 /package/root/lib64/
+cp /lib64/libnss_dns.so.2 /package/root/lib64/
+cp /lib64/libnss_files.so.2 /package/root/lib64/
 cp /lib64/libpthread.so.0 /package/root/lib64/
 cd /package/root
-tar czvf ../mesos-dns_$version-$(date +%Y%m%d%H%M%S).tar.gz .
+tar czvf ../mesos-dns_rootfs.tar.gz .
 cd ..
-cp mesos-dns*.tar.gz /target/
+cp mesos-dns_rootfs.tar.gz /target/
