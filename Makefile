@@ -11,7 +11,7 @@ help:
 	@exit 0
 
 .PHONY: all
-all: deb rpm
+all: deb rpm docker
 
 .PHONY: deb
 deb: ubuntu debian
