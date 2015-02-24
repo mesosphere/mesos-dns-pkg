@@ -12,7 +12,6 @@ TODOs:
 - refactor redundant code in build and package (bap.sh)
 - make script error resiliant (or set -e) so it's fit for use by a CI server
 - write test containers that take the build packages, install and run them
-!!! WIP !!!
 
 Set Up
 ------
