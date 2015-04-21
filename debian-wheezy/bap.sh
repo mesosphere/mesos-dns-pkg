@@ -1,5 +1,4 @@
 #!/bin/sh
-version=${1-0.1}
 if [ ! -d /target ]
 then
   echo "output directory /target not found"
@@ -13,6 +12,7 @@ export GOPATH=/build
 go get github.com/miekg/dns
 go get github.com/mesosphere/mesos-dns
 cd $GOPATH/src/github.com/mesosphere/mesos-dns
+version=$(egrep "version = \"" version.go | cut -d "\"" -f 2)
 go build -o mesos-dns
 strip mesos-dns
 cp mesos-dns /package/root/usr/bin/
