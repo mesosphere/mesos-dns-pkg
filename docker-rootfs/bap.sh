@@ -15,6 +15,7 @@ cd $GOPATH/src/github.com/mesosphere/mesos-dns
 go build -o mesos-dns
 strip mesos-dns
 cp mesos-dns /package/root/usr/bin/
+
 cp /lib64/ld-linux-x86-64.so.2 /package/root/lib64/
 cp /lib64/libc.so.6 /package/root/lib64/
 cp /lib64/libnss_compat.so.2 /package/root/lib64/
