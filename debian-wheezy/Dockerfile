@@ -31,9 +31,17 @@ RUN mkdir -p /build/ && \
     mkdir -p /package/root/etc/mesos-dns/ && \
     mkdir -p /package/root/etc/init/
 
+ENV GOPATH /build
+
+RUN go get github.com/tools/godep && \
+    cd $GOPATH/src/github.com/tools/godep && \
+    go build -o godep && \
+    cp godep /bin/
+
+COPY Makefile /
 COPY mesos-dns.init /package/
 COPY mesos-dns.postinst /package/
 COPY mesos-dns.postrm /package/
-COPY bap.sh /usr/bin/bap
 
-CMD ["bap"]
+
+CMD ["make", "debian-wheezy"]

@@ -11,10 +11,16 @@ RUN yum -y update && \
 RUN mkdir -p /build/ && \
     mkdir -p /package/root/ && \
     mkdir -p /package/root/usr/bin/ && \
-    mkdir -p /package/root/etc/mesos-dns/ && \
-    mkdir -p /package/root/usr/lib/systemd/system/
+    mkdir -p /package/root/etc/mesos-dns/
+
+ENV GOPATH /build
+
+RUN go get github.com/tools/godep && \
+    cd $GOPATH/src/github.com/tools/godep && \
+    go build -o godep && \
+    cp godep /bin/
 
 COPY mesos-dns.service /package/root/usr/lib/systemd/system/
-COPY bap.sh /usr/bin/bap
+COPY Makefile /
 
-CMD ["bap"]
+CMD ["make", "el7"]

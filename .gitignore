@@ -1,0 +1,14 @@
+/docker/mesos-dns_rootfs.tar.gz
+/debian-wheezy/Makefile
+/debian-wheezy/mesos-dns.init
+/debian-wheezy/mesos-dns.postinst
+/debian-wheezy/mesos-dns.postrm
+/docker-rootfs/Makefile
+/el6/Makefile
+/el6/mesos-dns.conf
+/el7/Makefile
+/el7/mesos-dns.service
+/ubuntu1404/Makefile
+/ubuntu1404/mesos-dns.conf
+/docker-rootfs/Makefile
+/packages/
