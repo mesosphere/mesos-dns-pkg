@@ -14,7 +14,14 @@ RUN mkdir -p /build/ && \
     mkdir -p /package/root/etc/mesos-dns/ && \
     mkdir -p /package/root/etc/init/
 
-COPY mesos-dns.conf /package/root/etc/init/
-COPY bap.sh /usr/bin/bap
+ENV GOPATH /build
 
-CMD ["bap"]
+RUN go get github.com/tools/godep && \
+    cd $GOPATH/src/github.com/tools/godep && \
+    go build -o godep && \
+    cp godep /bin/
+
+COPY mesos-dns.conf /package/root/etc/init/
+COPY Makefile /
+
+CMD ["make", "el6"]

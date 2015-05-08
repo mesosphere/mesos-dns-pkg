@@ -10,7 +10,16 @@ RUN yum -y update && \
 RUN mkdir -p /build/ && \
     mkdir -p /package/root/ && \
     mkdir -p /package/root/etc/ && \
-    mkdir -p /package/root/usr/bin/
+    mkdir -p /package/root/usr/bin/ && \
+    mkdir -p /package/root/etc/mesos-dns/ && \
+    mkdir -p /package/root/lib64/
+
+ENV GOPATH /build
+
+RUN go get github.com/tools/godep && \
+    cd $GOPATH/src/github.com/tools/godep && \
+    go build -o godep && \
+    cp godep /bin/
 
 RUN cd /package/root/etc/ && ln -s /proc/mounts mtab
 
@@ -21,6 +30,6 @@ COPY etc/nsswitch.conf /package/root/etc/
 COPY etc/passwd /package/root/etc/
 COPY etc/resolv.conf /package/root/etc/
 
-COPY bap.sh /usr/bin/bap
+COPY Makefile /
 
-CMD ["bap"]
+CMD ["make", "docker-rootfs"]

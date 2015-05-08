@@ -9,7 +9,6 @@ The Debian, Ubuntu and EL6 packages have not undergone any testing. They are men
 
 TODOs:
 - extract version from new version.go
-- refactor redundant code in build and package (bap.sh)
 - make script error resiliant (or set -e) so it's fit for use by a CI server
 - write test containers that take the build packages, install and run them
 
@@ -28,19 +27,13 @@ yum install docker                  ## On RedHat/CentOS/Fedora
 * Build packages
 
 ```bash
-./package.sh
-```
-
-or
-
-```bash
 make all
 ```
 
 or
 
 ```bash
-make ubuntu1404 VERSION=0.2
+make ubuntu1404
 ```
 
 * Build Docker container

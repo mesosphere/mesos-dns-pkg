@@ -16,11 +16,11 @@ RUN mkdir -p /build/ && \
 ENV GOPATH /build
 
 RUN go get github.com/tools/godep && \
-    cd $GOPATH//src/github.com/tools/godep && \
+    cd $GOPATH/src/github.com/tools/godep && \
     go build -o godep && \
     cp godep /bin/
 
 COPY mesos-dns.service /package/root/usr/lib/systemd/system/
 COPY Makefile /
 
-CMD ["bap"]
+CMD ["make", "el7"]
