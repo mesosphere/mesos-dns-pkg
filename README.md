@@ -32,7 +32,7 @@ make all
 or
 
 ```bash
-make ubuntu1404
+make ubuntu-trusty
 ```
 
 * Build Docker container
