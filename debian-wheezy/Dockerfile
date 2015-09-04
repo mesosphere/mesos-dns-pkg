@@ -1,47 +1,27 @@
-FROM debian:wheezy
+FROM golang:1.4.2-wheezy
 MAINTAINER Mesosphere Package Builder <support@mesosphere.io>
 
-RUN echo "deb-src http://http.debian.net/debian wheezy main" >> /etc/apt/sources.list && \
-    echo "deb-src http://http.debian.net/debian wheezy-updates main" >> /etc/apt/sources.list && \
-    apt-get -y update && \
-    apt-get -y upgrade && \
-    apt-get -y install ruby ruby-dev build-essential git devscripts pdebuild-cross wget && \
-    apt-get -y build-dep golang-go && \
-    gem install fpm && \
-    mkdir -p /build/ && \
-    cd /build/ && \
-    wget http://ftp.de.debian.org/debian/pool/main/g/golang/golang_1.3-3.dsc && \
-    wget http://ftp.de.debian.org/debian/pool/main/g/golang/golang_1.3.orig.tar.gz && \
-    wget http://ftp.de.debian.org/debian/pool/main/g/golang/golang_1.3-3.debian.tar.xz && \
-    dpkg-source -x golang_1.3-3.dsc && \
-    cd golang-1.3/ && \
-    debuild -us -uc && \
-    cd .. && \
-    dpkg -i \
-        golang-go_1.3-3_amd64.deb \
-        golang-src_1.3-3_amd64.deb \
-        golang-go-linux-amd64_1.3-3_amd64.deb && \
-    cd / && \
-    rm -rf /build/ && \
-    apt-get -y clean
+RUN echo "deb-src http://httpredir.debian.org/debian wheezy main" >> /etc/apt/sources.list && \
+    echo "deb-src http://httpredir.debian.org/debian wheezy-updates main" >> /etc/apt/sources.list && \
+    apt-get -yqq update && \
+    apt-get -yqq upgrade && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yqq install --no-install-recommends \
+      curl ruby ruby-dev build-essential git && \
+    apt-get -y clean && \
+    gem install fpm
 
-RUN mkdir -p /build/ && \
-    mkdir -p /package/root/ && \
+RUN mkdir -p /package/root/ && \
     mkdir -p /package/root/usr/bin/ && \
     mkdir -p /package/root/etc/mesos-dns/ && \
     mkdir -p /package/root/etc/init/
 
-ENV GOPATH /build
-
-RUN go get github.com/tools/godep && \
-    cd $GOPATH/src/github.com/tools/godep && \
-    go build -o godep && \
-    cp godep /bin/
+RUN go get github.com/tools/godep
 
 COPY Makefile /
 COPY mesos-dns.init /package/
 COPY mesos-dns.postinst /package/
 COPY mesos-dns.postrm /package/
 
+WORKDIR /
 
 CMD ["make", "debian-wheezy"]
