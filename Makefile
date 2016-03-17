@@ -3,7 +3,7 @@ DOCKER_OUT := $(shell pwd)/docker
 docker_build = docker build
 docker_run_cmd = docker run --rm=true
 docker_run = $(docker_run_cmd) -v $(PACKAGE_OUT):/target
-VERSION ?= 0.1.2
+VERSION ?= 0.5.2
 ITERATION ?= $(shell date +%Y%m%d%H%M%S)
 
 .PHONY: help

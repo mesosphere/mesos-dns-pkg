@@ -74,16 +74,13 @@ get-mesos-dns:
 
 .PHONY: copy-mesos-dns
 copy-mesos-dns: mesos-dns
-	cd ${GOPATH}/src/github.com/mesosphere/mesos-dns && \
-	cp mesos-dns /package/root/usr/bin/ && \
-	strip /package/root/usr/bin/mesos-dns && \
-	cp config.json.sample /package/root/etc/mesos-dns/config.json
+	cp ${GOPATH}/bin/mesos-dns /package/root/usr/bin/ && \
+	cp ${GOPATH}/src/github.com/mesosphere/mesos-dns/config.json.sample /package/root/etc/mesos-dns/config.json
 
 .PHONY: mesos-dns
 mesos-dns: get-mesos-dns
 	cd ${GOPATH}/src/github.com/mesosphere/mesos-dns && \
-	make restoredeps && \
-	make build
+	godep go build ./...
 
 .PHONY: unitdir
 unitdir:
