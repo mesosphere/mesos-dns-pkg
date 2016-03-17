@@ -1,30 +1,38 @@
-FROM ubuntu:14.04
+FROM ubuntu:14.04.3
 MAINTAINER Mesosphere Package Builder <support@mesosphere.io>
 
-RUN apt-get -y update && \
-    apt-get -y upgrade && \
-    apt-get -y install curl ruby ruby-dev build-essential git && \
+RUN apt-get -yqq update && \
+    apt-get -yqq upgrade && \
+    DEBIAN_FRONTEND=noninteractive apt-get -yqq install --no-install-recommends \
+      curl ruby ruby-dev build-essential git && \
     apt-get -y clean && \
     gem install fpm
 
-RUN mkdir -p /build/ && \
-    mkdir -p /package/root/ && \
+ENV GOLANG_VERSION 1.4.2
+ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.src.tar.gz
+ENV GOLANG_DOWNLOAD_SHA1 460caac03379f746c473814a65223397e9c9a2f6
+
+RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
+	&& echo "$GOLANG_DOWNLOAD_SHA1  golang.tar.gz" | sha1sum -c - \
+	&& tar -C /usr/src -xzf golang.tar.gz \
+	&& rm golang.tar.gz \
+	&& cd /usr/src/go/src && ./make.bash --no-clean 2>&1
+
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/src/go/bin:$PATH
+
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
+
+RUN mkdir -p /package/root/ && \
     mkdir -p /package/root/usr/bin/ && \
     mkdir -p /package/root/etc/mesos-dns/ && \
     mkdir -p /package/root/etc/init/
 
-RUN curl -O https://storage.googleapis.com/golang/go1.4.1.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.4.1.linux-amd64.tar.gz
-
-ENV PATH /usr/local/go/bin:$PATH
-ENV GOPATH /build
-
-RUN go get github.com/tools/godep && \
-    cd $GOPATH/src/github.com/tools/godep && \
-    go build -o godep && \
-    cp godep /bin/
+RUN go get github.com/tools/godep
 
 COPY Makefile /
 COPY mesos-dns.conf /package/root/etc/init/
+
+WORKDIR /
 
 CMD ["make", "ubuntu-trusty"]
