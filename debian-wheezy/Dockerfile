@@ -1,5 +1,4 @@
 FROM golang:1.4.2-wheezy
-MAINTAINER Mesosphere Package Builder <support@mesosphere.io>
 
 RUN echo "deb-src http://httpredir.debian.org/debian wheezy main" >> /etc/apt/sources.list && \
     echo "deb-src http://httpredir.debian.org/debian wheezy-updates main" >> /etc/apt/sources.list && \

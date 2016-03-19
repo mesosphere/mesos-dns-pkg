@@ -1,5 +1,4 @@
 FROM ubuntu:14.04.3
-MAINTAINER Mesosphere Package Builder <support@mesosphere.io>
 
 RUN apt-get -yqq update && \
     apt-get -yqq upgrade && \

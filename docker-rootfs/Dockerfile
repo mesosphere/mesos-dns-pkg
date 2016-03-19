@@ -1,5 +1,4 @@
 FROM centos:centos7
-MAINTAINER Mesosphere Package Builder <support@mesosphere.io>
 
 RUN yum -y update && \
     yum -y install epel-release && \

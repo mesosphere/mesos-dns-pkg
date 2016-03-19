@@ -62,8 +62,6 @@ package: copy-mesos-dns
 	--url "https://github.com/mesosphere/mesos-dns" \
 	--license Apache-2.0 \
 	--description "DNS-based service discovery for Mesos" \
-	--maintainer "Mesosphere Package Builder <support@mesosphere.io>" \
-	--vendor "Mesosphere, Inc." \
         $(INIT_CONFIG) \
 	. && \
 	cp mesos-dns*.$(PKG_TYPE) /target/
