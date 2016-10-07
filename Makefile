@@ -3,13 +3,13 @@ DOCKER_OUT := $(shell pwd)/docker
 docker_build = docker build
 docker_run_cmd = docker run --rm=true
 docker_run = $(docker_run_cmd) -v $(PACKAGE_OUT):/target
-VERSION ?= 0.5.2
+#VERSION ?= v0.6.0
 ITERATION ?= $(shell date +%Y%m%d%H%M%S)
 
 .PHONY: help
 help:
 	@echo "Please choose one of the following targets:"
-	@echo "  all, deb, rpm, el, ubuntu, debian $(VERSION)"
+	@echo "  all, deb, rpm, el, ubuntu, debian, docker"
 	@exit 0
 
 .PHONY: all
@@ -31,25 +31,25 @@ ubuntu: ubuntu-trusty
 debian: debian-wheezy
 
 .PHONY: el6
-el6: packages
+el6: packages check-version
 	cp common/Makefile common/mesos-dns.conf el6/
 	$(docker_build) -t mesosphere/mesosdnsbuilder-el6 el6
 	$(docker_run) mesosphere/mesosdnsbuilder-el6 make el6 VERSION=$(VERSION) ITERATION=$(ITERATION)
 
 .PHONY: el7
-el7: packages
+el7: packages check-version
 	cp common/Makefile common/mesos-dns.service el7/
 	$(docker_build) -t mesosphere/mesosdnsbuilder-el7 el7
 	$(docker_run) mesosphere/mesosdnsbuilder-el7 make el7 VERSION=$(VERSION) ITERATION=$(ITERATION)
 
 .PHONY: ubuntu-trusty
-ubuntu-trusty: packages
+ubuntu-trusty: packages check-version
 	cp common/Makefile common/mesos-dns.conf ubuntu1404/
 	$(docker_build) -t mesosphere/mesosdnsbuilder-ubuntu1404 ubuntu1404
 	$(docker_run) mesosphere/mesosdnsbuilder-ubuntu1404 make ubuntu-trusty VERSION=$(VERSION) ITERATION=$(ITERATION)
 
 .PHONY: debian-wheezy
-debian-wheezy: packages
+debian-wheezy: packages check-version
 	cp common/Makefile common/mesos-dns.init common/mesos-dns.postinst common/mesos-dns.postrm debian-wheezy/
 	$(docker_build) -t mesosphere/mesosdnsbuilder-debian-wheezy debian-wheezy
 	$(docker_run) mesosphere/mesosdnsbuilder-debian-wheezy make debian-wheezy VERSION=$(VERSION) ITERATION=$(ITERATION)
@@ -58,11 +58,11 @@ debian-wheezy: packages
 docker-rootfs:
 	cp common/Makefile docker-rootfs/
 	$(docker_build) -t mesosphere/mesosdnsbuilder-docker-rootfs docker-rootfs
-	$(docker_run) mesosphere/mesosdnsbuilder-docker-rootfs make docker-rootfs
+	$(docker_run) mesosphere/mesosdnsbuilder-docker-rootfs make docker-rootfs VERSION=$(VERSION)
 
 .PHONY: docker
 docker: docker_run = $(docker_run_cmd) -v $(DOCKER_OUT):/target
-docker: docker-rootfs
+docker: docker-rootfs check-version
 	$(docker_build) -t mesosphere/mesos-dns:$(VERSION) docker
 
 .PHONY: clean
@@ -82,6 +82,12 @@ clean:
 	rm -f ubuntu1404/mesos-dns.conf
 	rm -f docker-rootfs/Makefile
 
-
+.PHONY: packages
 packages:
 	mkdir -p '$(PACKAGE_OUT)'
+
+.PHONY: check-version
+check-version:
+ifndef VERSION
+    $(error VERSION is undefined)
+endif

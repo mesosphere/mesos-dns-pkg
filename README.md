@@ -8,7 +8,7 @@ The Debian, Ubuntu and EL6 packages have not undergone thorough testing. They ar
 
 
 TODO:
-- make script error resiliant (or set -e) so it's fit for use by a CI server
+- make script error resilient (or set -e) so it's fit for use by a CI server
 - write test containers that take the build packages, install and run them
 
 Set Up

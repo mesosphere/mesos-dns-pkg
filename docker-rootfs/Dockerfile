@@ -18,6 +18,7 @@ RUN mkdir -p /package/root/ && \
     mkdir -p /package/root/lib64/
 
 RUN go get github.com/tools/godep
+RUN go get github.com/kardianos/govendor
 
 RUN cd /package/root/etc/ && ln -s /proc/mounts mtab
 

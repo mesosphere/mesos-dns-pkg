@@ -1,4 +1,4 @@
-VERSION ?= 0.1.2
+#VERSION ?= v0.6.0
 DIST ?= el7
 ITERATION ?= $(shell date +%Y%m%d%H%M%S)
 RPM_PKG_TYPE = rpm
@@ -52,7 +52,7 @@ docker-rootfs: copy-mesos-dns
 	cp /package/mesos-dns_rootfs.tar.gz /target/
 
 .PHONY: package
-package: copy-mesos-dns
+package: copy-mesos-dns check-version
 	cd /package && \
 	fpm -C root \
 	--config-files etc/mesos-dns/config.json \
@@ -67,8 +67,10 @@ package: copy-mesos-dns
 	cp mesos-dns*.$(PKG_TYPE) /target/
 
 .PHONY: get-mesos-dns
-get-mesos-dns:
-	go get github.com/mesosphere/mesos-dns
+get-mesos-dns: check-version
+	go get github.com/mesosphere/mesos-dns && \
+	cd ${GOPATH}/src/github.com/mesosphere/mesos-dns && \
+	git checkout $(VERSION)
 
 .PHONY: copy-mesos-dns
 copy-mesos-dns: mesos-dns
@@ -78,7 +80,9 @@ copy-mesos-dns: mesos-dns
 .PHONY: mesos-dns
 mesos-dns: get-mesos-dns
 	cd ${GOPATH}/src/github.com/mesosphere/mesos-dns && \
-	godep go build ./...
+	govendor sync && \
+	go build ./...
+	#godep go build ./...
 
 .PHONY: unitdir
 unitdir:
@@ -88,3 +92,8 @@ unitdir:
 initdir:
 	mkdir -p /package/root/etc/init/
 
+.PHONY: check-version
+check-version:
+ifndef VERSION
+    $(error VERSION is undefined)
+endif
