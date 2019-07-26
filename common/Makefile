@@ -5,7 +5,7 @@ RPM_PKG_TYPE = rpm
 DEB_PKG_TYPE = deb
 SYSVINIT_CONFIG = --deb-init mesos-dns.init --after-install mesos-dns.postinst --after-remove mesos-dns.postrm
 UPSTART_CONFIG  = --config-files etc/init/mesos-dns.conf
-SYSTEMD_CONFIG  = --config-files usr/lib/systemd/system/mesos-dns.service
+SYSTEMD_CONFIG  = --config-files lib/systemd/system/mesos-dns.service
 
 .PHONY: help
 help:
@@ -63,7 +63,7 @@ package: copy-mesos-dns check-version
 	fpm -C root \
 	--config-files etc/mesos-dns/config.json \
 	--iteration $(ITERATION).$(DIST) \
-	-t $(PKG_TYPE) -s dir -n mesos-dns -v $(VERSION) \
+	-t $(PKG_TYPE) -s dir -n mesos-dns -v $(subst v,,$(VERSION)) \
 	--architecture native \
 	--url "https://github.com/mesosphere/mesos-dns" \
 	--license Apache-2.0 \
@@ -79,7 +79,7 @@ get-go-dependencies:
 	go get github.com/alecthomas/gometalinter
 	go get github.com/axw/gocov/gocov # https://github.com/golang/go/issues/6909
 	go get github.com/mattn/goveralls
-	go get github.com/jstemmer/go-junit-report
+#	go get github.com/jstemmer/go-junit-report
 
 .PHONY: get-mesos-dns 
 get-mesos-dns: check-version get-go-dependencies
