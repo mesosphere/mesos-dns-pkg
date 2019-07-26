@@ -10,5 +10,7 @@
 /el7/mesos-dns.service
 /ubuntu1404/Makefile
 /ubuntu1404/mesos-dns.conf
+/ubuntu1604/Makefile
+/ubuntu1604/mesos-dns.service
 /docker-rootfs/Makefile
 /packages/

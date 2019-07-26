@@ -3,7 +3,7 @@ DOCKER_OUT := $(shell pwd)/docker
 docker_build = docker build
 docker_run_cmd = docker run --rm=true
 docker_run = $(docker_run_cmd) -v $(PACKAGE_OUT):/target
-#VERSION ?= v0.6.0
+VERSION ?= v0.6.0
 ITERATION ?= $(shell date +%Y%m%d%H%M%S)
 
 .PHONY: help
@@ -25,7 +25,7 @@ rpm: el
 el: el6 el7
 
 .PHONY: ubuntu
-ubuntu: ubuntu-trusty
+ubuntu: ubuntu-xenial
 
 .PHONY: debian
 debian: debian-wheezy
@@ -47,6 +47,12 @@ ubuntu-trusty: packages check-version
 	cp common/Makefile common/mesos-dns.conf ubuntu1404/
 	$(docker_build) -t mesosphere/mesosdnsbuilder-ubuntu1404 ubuntu1404
 	$(docker_run) mesosphere/mesosdnsbuilder-ubuntu1404 make ubuntu-trusty VERSION=$(VERSION) ITERATION=$(ITERATION)
+
+.PHONY: ubuntu-xenial
+ubuntu-xenial: packages check-version
+	cp common/Makefile common/mesos-dns.service ubuntu1604/
+	$(docker_build) -t mesosphere/mesosdnsbuilder-ubuntu1604 ubuntu1604
+	$(docker_run) mesosphere/mesosdnsbuilder-ubuntu1604 make ubuntu-xenial VERSION=$(VERSION) ITERATION=$(ITERATION)
 
 .PHONY: debian-wheezy
 debian-wheezy: packages check-version

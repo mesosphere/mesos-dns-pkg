@@ -28,6 +28,12 @@ el6: INIT_CONFIG = $(UPSTART_CONFIG)
 el6: DIST = el6
 el6: package
 
+.PHONY: ubuntu-xenial
+ubuntu-xenial: PKG_TYPE = $(DEB_PKG_TYPE)
+ubuntu-xenial: INIT_CONFIG = $(SYSTEMD_CONFIG)
+ubuntu-xenial: DIST = ubuntu1604
+ubuntu-xenial: package
+
 .PHONY: ubuntu-trusty
 ubuntu-trusty: PKG_TYPE = $(DEB_PKG_TYPE)
 ubuntu-trusty: INIT_CONFIG = $(UPSTART_CONFIG)
@@ -66,8 +72,17 @@ package: copy-mesos-dns check-version
 	. && \
 	cp mesos-dns*.$(PKG_TYPE) /target/
 
-.PHONY: get-mesos-dns
-get-mesos-dns: check-version
+.PHONY: get-go-dependencies
+get-go-dependencies: 
+	go get github.com/kardianos/govendor
+	go get github.com/mitchellh/gox
+	go get github.com/alecthomas/gometalinter
+	go get github.com/axw/gocov/gocov # https://github.com/golang/go/issues/6909
+	go get github.com/mattn/goveralls
+	go get github.com/jstemmer/go-junit-report
+
+.PHONY: get-mesos-dns 
+get-mesos-dns: check-version get-go-dependencies
 	go get github.com/mesosphere/mesos-dns && \
 	cd ${GOPATH}/src/github.com/mesosphere/mesos-dns && \
 	git checkout $(VERSION)
