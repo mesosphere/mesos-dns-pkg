@@ -76,10 +76,6 @@ package: copy-mesos-dns check-version
 get-go-dependencies: 
 	go get github.com/kardianos/govendor
 	go get github.com/mitchellh/gox
-	go get github.com/alecthomas/gometalinter
-	go get github.com/axw/gocov/gocov # https://github.com/golang/go/issues/6909
-	go get github.com/mattn/goveralls
-#	go get github.com/jstemmer/go-junit-report
 
 .PHONY: get-mesos-dns 
 get-mesos-dns: check-version get-go-dependencies
