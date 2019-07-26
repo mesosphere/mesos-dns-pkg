@@ -86,6 +86,8 @@ clean:
 	rm -f el7/mesos-dns.service
 	rm -f ubuntu1404/Makefile
 	rm -f ubuntu1404/mesos-dns.conf
+	rm -f ubuntu1604/Makefile
+	rm -f ubuntu1604/mesos-dns.service
 	rm -f docker-rootfs/Makefile
 
 .PHONY: packages

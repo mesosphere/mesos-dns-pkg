@@ -5,7 +5,7 @@ RPM_PKG_TYPE = rpm
 DEB_PKG_TYPE = deb
 SYSVINIT_CONFIG = --deb-init mesos-dns.init --after-install mesos-dns.postinst --after-remove mesos-dns.postrm
 UPSTART_CONFIG  = --config-files etc/init/mesos-dns.conf
-SYSTEMD_CONFIG  = --config-files lib/systemd/system/mesos-dns.service
+SYSTEMD_CONFIG  = --config-files usr/lib/systemd/system/mesos-dns.service
 
 .PHONY: help
 help:
@@ -32,6 +32,7 @@ el6: package
 ubuntu-xenial: PKG_TYPE = $(DEB_PKG_TYPE)
 ubuntu-xenial: INIT_CONFIG = $(SYSTEMD_CONFIG)
 ubuntu-xenial: DIST = ubuntu1604
+ubuntu-xenial: override SYSTEMD_CONFIG = --config-files lib/systemd/system/mesos-dns.service
 ubuntu-xenial: package
 
 .PHONY: ubuntu-trusty
@@ -63,7 +64,7 @@ package: copy-mesos-dns check-version
 	fpm -C root \
 	--config-files etc/mesos-dns/config.json \
 	--iteration $(ITERATION).$(DIST) \
-	-t $(PKG_TYPE) -s dir -n mesos-dns -v $(subst v,,$(VERSION)) \
+	-t $(PKG_TYPE) -s dir -n mesos-dns -v $(patsubst v%,%,$(VERSION)) \
 	--architecture native \
 	--url "https://github.com/mesosphere/mesos-dns" \
 	--license Apache-2.0 \
