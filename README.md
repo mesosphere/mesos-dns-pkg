@@ -32,7 +32,13 @@ make all
 or
 
 ```bash
-make ubuntu-trusty
+make ubuntu-xenial
+```
+
+or to package a specific version of mesos-dns with valid release tag (defaults to 0.6.0 currently)
+
+```bash
+make -e VERSION=v0.7.0-rc2 ubuntu-xenial
 ```
 
 * Build Docker container

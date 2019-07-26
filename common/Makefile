@@ -28,6 +28,13 @@ el6: INIT_CONFIG = $(UPSTART_CONFIG)
 el6: DIST = el6
 el6: package
 
+.PHONY: ubuntu-xenial
+ubuntu-xenial: PKG_TYPE = $(DEB_PKG_TYPE)
+ubuntu-xenial: INIT_CONFIG = $(SYSTEMD_CONFIG)
+ubuntu-xenial: DIST = ubuntu1604
+ubuntu-xenial: override SYSTEMD_CONFIG = --config-files lib/systemd/system/mesos-dns.service
+ubuntu-xenial: package
+
 .PHONY: ubuntu-trusty
 ubuntu-trusty: PKG_TYPE = $(DEB_PKG_TYPE)
 ubuntu-trusty: INIT_CONFIG = $(UPSTART_CONFIG)
@@ -57,7 +64,7 @@ package: copy-mesos-dns check-version
 	fpm -C root \
 	--config-files etc/mesos-dns/config.json \
 	--iteration $(ITERATION).$(DIST) \
-	-t $(PKG_TYPE) -s dir -n mesos-dns -v $(VERSION) \
+	-t $(PKG_TYPE) -s dir -n mesos-dns -v $(patsubst v%,%,$(VERSION)) \
 	--architecture native \
 	--url "https://github.com/mesosphere/mesos-dns" \
 	--license Apache-2.0 \
@@ -66,8 +73,13 @@ package: copy-mesos-dns check-version
 	. && \
 	cp mesos-dns*.$(PKG_TYPE) /target/
 
-.PHONY: get-mesos-dns
-get-mesos-dns: check-version
+.PHONY: get-go-dependencies
+get-go-dependencies: 
+	go get github.com/kardianos/govendor
+	go get github.com/mitchellh/gox
+
+.PHONY: get-mesos-dns 
+get-mesos-dns: check-version get-go-dependencies
 	go get github.com/mesosphere/mesos-dns && \
 	cd ${GOPATH}/src/github.com/mesosphere/mesos-dns && \
 	git checkout $(VERSION)
