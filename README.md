@@ -32,7 +32,7 @@ make all
 or
 
 ```bash
-make ubuntu-trusty
+make ubuntu-xenial
 ```
 
 * Build Docker container
